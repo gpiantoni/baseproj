@@ -1,0 +1,33 @@
+Template script to start a complete analysis on EEG/MEG data, using Fieldtrip.
+
+The analysis can run on:
+1) event-based data (using the eventbased repo)
+2) MRI data to create personal leadfields (using the mri2lead repo)
+3) sleep to detect spindles and slow waves (using the detectsleep repo)
+
+To start a new complete analysis, called "ANALYSISNAME", you should go into the script folder (/data1/projects/PROJNAME/scripts/):
+  git clone git://github.com/gpiantoni/baseproj.git
+Then rename baseproj into ANALYSISNAME. In the folder ANALYSISNAME, you'll find a file called "projname.m", rename it to your ANALYSISNAME.m
+
+Depending on what you want to do, you need to get the other tools for the potential analysis.
+
+1) If you want to do event-based analysis, go into your ANALYSISNAME folder and type in command line:
+  git clone git://github.com/gpiantoni/eventbased.git
+The artifact-cleaning of the data depends on German's toolbox. You need to get reading access to: aar, eegcore, external, io, misc
+If you have reading access, you should create a folder called "gtoolbox". Then in the folder, from the command line:
+  hg clone https://username:password@bitbucket.org/gomezher/aar
+  hg clone https://username:password@bitbucket.org/gomezher/eegcore
+  hg clone https://username:password@bitbucket.org/gomezher/io
+  hg clone https://username:password@bitbucket.org/gomezher/misc
+
+2) If you want to create subject-specific forward model based on the MRI, go into your ANALYSISNAME folder and type in command line:
+  git clone git://github.com/gpiantoni/mri2lead.git
+
+3) If you want to detect slow waves and spindles, go into your ANALYSISNAME folder and type in command line:
+  git clone git://github.com/gpiantoni/detectsleep.git
+Note that detectsleep depends on FASST toolbox for the sleep scoring.
+
+Then you can start modifying the ANALYSISNAME.m for your analysis
+
+
+

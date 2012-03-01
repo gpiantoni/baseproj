@@ -1,48 +1,49 @@
 function projname(cfgin)
 
 %-------------------------------------%
-%-PATH--------------------------------%
+%-INFO--------------------------------%
 %-------------------------------------%
-
 %-----------------%
+%-project folder
 cfg = [];
 % name of the project according to /data1/projects/PROJNAME/
-cfg.proj = 'PROJNAME'; 
+cfg.proj = 'PROJNAME'; % <- FIXTHIS
 % name to be used in PROJNAME/subjects/0001/MOD/CONDNAME/
 % ideally identical to cfg.proj
-cfg.cond = 'CONDNAME'; 
+cfg.cond = 'CONDNAME'; % <- FIXTHIS
+%-----------------%
 
-%-------%
-%-recording folder info
+%-----------------%
+%-recording folder
 % name of the recordings according to /data1/recordings/RECNAME/
-cfg.rec  = 'RECNAME';
+cfg.rec  = 'RECNAME'; % <- FIXTHIS
 % name of the modality used in recordings ('eeg' or 'meg')
 cfg.mod  = 'eeg';
-%-------%
+%-----------------%
+%-------------------------------------%
 
-%-------%
-% define directories
+%-------------------------------------%
+%-DIRECTORIES-------------------------%
+%-------------------------------------%
 cfg.base = ['/data1/projects/' cfg.proj filesep];
 cfg.recd = [cfg.base 'recordings/' cfg.rec filesep];
 cfg.recs = [cfg.recd 'subjects/'];
 
-cfg.scrp = [cfg.base 'scripts/final/']; % working directory which contains the current file
+cfg.scrp = [cfg.base 'scripts/' cfg.cond filesep]; % working directory which contains the current file % <- FIXTHIS
 cfg.qlog = [cfg.scrp 'qsublog/']; % use to keep log files from SGE
 cfg.data = [cfg.base 'subjects/']; 
 cfg.anly = [cfg.base 'analysis/'];
-cfg.rslt = [cfg.base 'results/images/']; % folder to save images
+cfg.rslt = [cfg.base 'results/' cfg.cond filesep]; % folder to save images
 
 %-TODO: how to treat these 3 folders nicely?
 cfg.derp = [cfg.anly 'erp/'];
 cfg.dpow = [cfg.anly 'pow/'];
 cfg.dcon = [cfg.anly 'conn/'];
-%-------%
 
 %-------%
 %-uncomment here if necessary
 if isdir(cfg.derp); rmdir(cfg.derp, 's'); end; mkdir(cfg.derp);
 if isdir(cfg.dpow); rmdir(cfg.dpow, 's'); end; mkdir(cfg.dpow);
-if isdir(cfg.dpha); rmdir(cfg.dpha, 's'); end; mkdir(cfg.dpha);
 if isdir(cfg.dcon); rmdir(cfg.dcon, 's'); end; mkdir(cfg.dcon);
 %-------%
 %-----------------%
@@ -54,7 +55,7 @@ if isdir(cfg.dcon); rmdir(cfg.dcon, 's'); end; mkdir(cfg.dcon);
 %-----------------%
 %-subjects index and step index
 cfg.subjall = 1:8;
-cfg.run = [8:12];
+cfg.run = [1:14];
 
 step.nooge = [];
 %-----------------%
@@ -65,9 +66,9 @@ step.nooge = [];
 % b) subject analysis (SGE, any order)
 % c) group analysis (no SGE, any order)
 st = 0;
-step.prep = [1  2  3  4]; % no artifact rejection
-step.subj = [5 7  9 11];
-step.grp  = [6 8 10 12 13 14];
+step.prep = [1  2  3  4];
+step.subj = [5  7  9 11];
+step.grp  = [6  8 10 12 13 14];
 %  5  6 -> erp  7  8 -> erpgrand
 %  9 10 -> pow 11  12 -> powgrand
 % 13 -> custom function 14 -> write to csv
@@ -76,16 +77,16 @@ cfg.clear = [1  2  3]; % TODO: improve handling of clear, only meaningful for pr
 
 %-----------------%
 %-elec info
-cfg.sens.file = '/data1/toolbox/elecloc/easycap_61_FT.mat'; % it uses 'elec' with 'E1' electrode names
-cfg.sens.dist = 50; % same units as channel location
-cfg.sens.layout = '/data1/toolbox/elecloc/easycap_61_FT.mat';
+cfg.sens.file = '/data1/toolbox/elecloc/EGI_GSN-HydroCel-256_new_cnfg.sfp'; % only for sens, but labels are lowercase
+cfg.sens.dist = 4;
+cfg.sens.layout = '/data1/toolbox/elecloc/EGI_GSN-HydroCel-256_new_cnfg.mat';
 %-----------------%
 
 %-----------------%
 %-vol info
-cfg.vol.type = 'dipoli'; % 'template' or 'dipoli' ('dipoli' and the rest use subject-specific MRI)
+cfg.vol.type = 'template'; % 'template' or 'dipoli' ('dipoli' and the rest use subject-specific MRI)
 if strcmp(cfg.vol.type, 'template')
-  cfg.vol.template = [cfg.anly 'smri/vigd_volleadsens_spmtemplate_dipoli.mat']; 
+  cfg.vol.template = [cfg.anly 'forward/gosd_avg_volleadsens_spmtemplate_dipoli.mat'];
 else
   cfg.vol.mod = 'smri';
   cfg.vol.cond = 't1';
