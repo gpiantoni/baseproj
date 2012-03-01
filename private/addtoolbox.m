@@ -67,7 +67,7 @@ end
 %-------------------------------------%
 %-POTENTIAL TOOLBOXES
 %-----------------%
-%-check which toolboxes are present
+%-check which toolboxes are present (git)
 toolbox = {'eventbased' 'detectsleep' 'mri2lead' [cfg.cond '_private']};
 dirtools = dir(cfg.scrp);
 toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
