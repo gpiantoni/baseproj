@@ -16,7 +16,7 @@ Depending on what you want to do, you need to get the other tools for the potent
 The artifact-cleaning of the data depends on German's toolbox. You need to get reading access to: aar, eegcore, external, io, misc, mperl
 If you have reading access, you should create a folder called "gtoolbox". Then in the folder, from the command line:
   hg clone https://username:password@bitbucket.org/gomezher/aar
-  hg clone https://username:password@bitbucket.org/gomezher/eegcore
+  hg clone https://username:password@bitbucket.org/gomezher/eegcore -r 74840cea764449177de3cfe90ebd8a89e22fd0e8 
   hg clone https://username:password@bitbucket.org/gomezher/io
   hg clone https://username:password@bitbucket.org/gomezher/misc
   hg clone https://username:password@bitbucket.org/gomezher/mperl
