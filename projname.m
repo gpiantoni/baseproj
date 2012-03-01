@@ -42,6 +42,7 @@ cfg.dcon = [cfg.anly 'conn/'];
 
 %-------%
 %-uncomment here if necessary
+if isdir(cfg.qlog); rmdir(cfg.qlog, 's'); end; mkdir(cfg.qlog);
 if isdir(cfg.derp); rmdir(cfg.derp, 's'); end; mkdir(cfg.derp);
 if isdir(cfg.dpow); rmdir(cfg.dpow, 's'); end; mkdir(cfg.dpow);
 if isdir(cfg.dcon); rmdir(cfg.dcon, 's'); end; mkdir(cfg.dcon);
