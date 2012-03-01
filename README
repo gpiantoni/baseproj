@@ -5,7 +5,7 @@ The analysis can run on:
 2) MRI data to create personal leadfields (using the mri2lead repo)
 3) sleep to detect spindles and slow waves (using the detectsleep repo)
 
-To start a new complete analysis, called "ANALYSISNAME", you should go into the script folder:
+To start a new complete analysis, called "ANALYSISNAME", you should go into the script folder (/data1/projects/PROJNAME/scripts/):
   git clone git://github.com/gpiantoni/baseproj.git
 Then rename baseproj into ANALYSISNAME. In the folder ANALYSISNAME, you'll find a file called "projname.m", rename it to your ANALYSISNAME.m
 
