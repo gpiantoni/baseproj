@@ -100,11 +100,11 @@ end
 st = st + 1;
 cfg.step{st} = 'seldata';
 
-cfg.rcnd = '_recname-';
+cfg.rcnd = '_recname-'; % unique identifier for your dataset
 cfg.seldata.trialfun = 'trialfun_XXX';
 
-cfg.seldata.selchan = 1:61;
-cfg.seldata.label = cellfun(@(x) ['E' num2str(x)], num2cell(1:61), 'uni', 0);
+cfg.seldata.selchan = 1:257;
+cfg.seldata.label = cellfun(@(x) ['E' num2str(x)], num2cell(cfg.seldata.selchan), 'uni', 0);
 %-----------------%
 
 %-----------------%
@@ -131,7 +131,7 @@ st = st + 1;
 cfg.step{st} = 'preproc';
 cfg.preproc.reref = 'yes';
 cfg.preproc.refchannel = 'all';
-cfg.preproc.implicit = [];
+cfg.preproc.implicit = 'E257';
 
 cfg.preproc.hpfilter = 'yes';
 cfg.preproc.hpfreq = 0.5;
@@ -302,7 +302,7 @@ cfg.yourfunction.parameter = 'test';
 st = st + 1;
 cfg.step{st} = 'export2csv';
 cfg.csvf = [cfg.anly cfg.cond '_complete.csv']; % file to write results to
-cfg.export2csv.extrainfo = 'exportneckersd';
+cfg.export2csv.extrainfo = [];
 %---------------------------%
 %---------------------------%
 
