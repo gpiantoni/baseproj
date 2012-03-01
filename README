@@ -1,0 +1,9 @@
+Template script to start a complete analysis.
+
+The analysis can run on:
+1) event-based data (using the eventbased repo)
+2) MRI data to create personal leadfields (using the mri2lead repo)
+3) sleep to detect spindles and slow waves (using the detectsleep repo)
+
+
+
