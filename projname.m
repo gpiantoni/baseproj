@@ -42,7 +42,6 @@ cfg.dcon = [cfg.anly 'conn/'];
 %-uncomment here if necessary
 if isdir(cfg.derp); rmdir(cfg.derp, 's'); end; mkdir(cfg.derp);
 if isdir(cfg.dpow); rmdir(cfg.dpow, 's'); end; mkdir(cfg.dpow);
-if isdir(cfg.dpha); rmdir(cfg.dpha, 's'); end; mkdir(cfg.dpha);
 if isdir(cfg.dcon); rmdir(cfg.dcon, 's'); end; mkdir(cfg.dcon);
 %-------%
 %-----------------%
@@ -54,7 +53,7 @@ if isdir(cfg.dcon); rmdir(cfg.dcon, 's'); end; mkdir(cfg.dcon);
 %-----------------%
 %-subjects index and step index
 cfg.subjall = 1:8;
-cfg.run = [8:12];
+cfg.run = [1:14];
 
 step.nooge = [];
 %-----------------%
