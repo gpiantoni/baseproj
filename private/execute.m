@@ -3,6 +3,10 @@ function execute(cfg, step)
 %-------------------------------------%
 %-LOG---------------------------------%
 %-------------------------------------%
+if ~isfield(step, 'sendemail')
+  step.sendemail = true;
+end
+
 %-----------------%
 %-don't include cfg.run if it's not part of preproc
 % f.e. you might write cfg.run=1:10 bc it's faster, but you don't want to
@@ -143,6 +147,8 @@ end
 
 %-------------------------------------%
 %-send email
-send_email(cfg)
+if step.sendemail
+  send_email(cfg)
+end
 cd(cfg.scrp)
 %-------------------------------------%
