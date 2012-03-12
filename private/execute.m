@@ -72,7 +72,7 @@ for r = intersect(cfg.run, step.prep) % only preproc steps
   else
     %-------%
     cfgcell = repmat({cfg}, 1, numel(cfg.subjall));
-    qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60);
+    qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', cfg.step{r});
     %-------%
   end
   %-----------------%
@@ -107,7 +107,7 @@ for r = intersect(cfg.run, union(step.subj, step.grp))
     else
       
       %-------%
-      qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60)
+      qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', cfg.step{r});
       %-------%
       
     end
