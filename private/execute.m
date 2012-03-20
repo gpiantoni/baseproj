@@ -125,7 +125,7 @@ for r = intersect(cfg.run, union(step.subj, step.grp))
       %-------%
     else
       %-------%
-      qsubcellfun(cfg.step{r}, {cfg}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'local')
+      qsubcellfun(cfg.step{r}, {cfg}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system')
       %-------%
       
     end
