@@ -18,7 +18,9 @@ ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
 %-----------------%
 %-addpath
 addpath(ftpath) 
-ft_defaults.checksize = Inf; % otherwise it deletes cfg field which are too big
+global ft_default
+ft_default.checksize = Inf; % otherwise it deletes cfg field which are too big
+ft_defaults
 addpath([ftpath 'qsub/'])
 %-----------------%
 
