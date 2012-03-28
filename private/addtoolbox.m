@@ -17,7 +17,7 @@ ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
 
 %-----------------%
 %-addpath
-addpath(ftpath) 
+addpath(ftpath)
 global ft_default
 ft_default.checksize = Inf; % otherwise it deletes cfg field which are too big
 ft_defaults
@@ -36,8 +36,8 @@ output = sprintf('fieldtrip:\t%s', ftver);
 %-------------------------------------%
 
 %-------------------------------------%
-%-GTOOLBOX
-gpath = [cfg.scrp 'gtoolbox/']; % gtoolbox (bitbucket, with subdirectories)
+%-GERMAN'S TOOLBOX (called eegcore)
+gpath = [cfg.scrp 'eegcore/']; % eegcore (bitbucket, with subdirectories)
 
 if isdir(gpath)
   %-----------------%
@@ -52,17 +52,15 @@ if isdir(gpath)
   
   %-----------------%
   %-get gtoolbox version
-  gtool = dir(gpath);
-  for i = 3:numel(gtool)
-    try % so many thing can go wrong here
-      [~, gver] = system(['hg --debug tags --cwd ' gpath gtool(i).name ' | awk ''{print $2}''']);
-    catch ME
-      gver = ME.message;
-    end
-    outtmp = sprintf('gtoolbox %s:\t%s', gtool(i).name, gver);
-    output = [output outtmp];
+  try % so many thing can go wrong here
+    [~, gver] = system(['hg --debug tags --cwd ' gpath ' | awk ''{print $2}''']);
+  catch ME
+    gver = ME.message;
   end
+  outtmp = sprintf('eegcore:\t%s', gver);
+  output = [output outtmp];
   %-----------------%
+  
 end
 %-------------------------------------%
 
