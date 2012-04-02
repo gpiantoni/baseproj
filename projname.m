@@ -305,7 +305,7 @@ cfg.step{st} = 'export2csv';
 cfg.csvf = [cfg.anly cfg.cond '_complete.csv']; % file to write results to
 cfg.export2csv.extrainfo = [];
 %---------------------------%
-%---------------------------%
+%-------------------------------------%
 
 %-------------------------------------%
 %-EXECUTE
