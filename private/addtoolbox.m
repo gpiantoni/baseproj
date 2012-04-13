@@ -6,15 +6,17 @@ function output = addtoolbox(cfg)
 %
 %   - eventbased
 %   - mri2lead
-%   - detectsleep
+%   - detectsleep (and spm8)
+%   - dti
 %
 %   - project specific (with subdirectories)
 % The project-specific folder should be called [cfg.cond '_private']
 
+ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
+spmpath = '/data1/toolbox/spm8/'; % fieldtrip (svn)
+
 %-------------------------------------%
 %-FIELDTRIP (always necessary)
-ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
-
 %-----------------%
 %-addpath
 addpath(ftpath)
@@ -66,21 +68,21 @@ end
 
 %-------------------------------------%
 %-POTENTIAL TOOLBOXES
-%-----------------%
+%---------------------------%
 %-check which toolboxes are present (git)
 toolbox = {'eventbased' 'detectsleep' 'mri2lead' 'dti' [cfg.cond '_private']};
 dirtools = dir(cfg.scrp);
 toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
-%-----------------%
+%---------------------------%
 
-%-----------------%
+%---------------------------%
 %-add present toolbox
 for i = 1:numel(toolbox)
   
   tpath = [cfg.scrp toolbox{i} filesep];
   addpath(genpath(tpath)) % with subdirectories
   
-  %-------%
+  %-----------------%
   %-get git version
   try % so many thing can go wrong here
     [~, tver] = system(['git --git-dir=' tpath '.git log |  awk ''NR==1'' | awk ''{print $2}''']);
@@ -89,8 +91,27 @@ for i = 1:numel(toolbox)
   end
   outtmp = sprintf('%s:\t%s', toolbox{i}, tver);
   output = [output outtmp];
-  %-------%
+  %-----------------%
+  
+  %-----------------%
+  %-add SPM if using detectsleep
+  if strcmp(toolbox{i}, 'detectsleep')
+    
+    addpath(spmpath)
+    spm defaults eeg
+    
+    %-------%
+    %-avoid conflict between spm8 and fieldtrip
+    % remove folders that have both spm8 and fieldtrip (external of spm)
+    oldpath = matlabpath;
+    dirs = regexp(oldpath, ':', 'split');
+    goodpath = dirs(cellfun(@isempty, regexp(dirs, 'fieldtrip')) | cellfun(@isempty, regexp(dirs, 'spm8')));
+    matlabpath(sprintf('%s:', goodpath{:}))
+    %-------%
+    
+  end
+  %-----------------%
   
 end
-%-----------------%
+%---------------------------%
 %-------------------------------------%
