@@ -33,7 +33,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Send the email
 if isempty(attachment)
-  send_mail_message('gpiantoni.work', cfg.proj, mailtext)
+  send_mail_message('gpiantoni.work', [cfg.proj '/' cfg.cond], mailtext)
 else
-  send_mail_message('gpiantoni.work', cfg.proj, mailtext, attachment)
+  send_mail_message('gpiantoni.work', [cfg.proj '/' cfg.cond], mailtext, attachment)
 end
