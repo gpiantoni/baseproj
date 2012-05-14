@@ -72,7 +72,7 @@ for r = intersect(cfg.run, step.prep) % only preproc steps
   else
     %-------%
     cfgcell = repmat({cfg}, 1, numel(cfg.subjall));
-    qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [cfg.cond '_' cfg.step{r}]);
+    qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [cfg.nick '_' cfg.step{r}]);
     %-------%
   end
   %-----------------%
@@ -107,7 +107,7 @@ for r = intersect(cfg.run, union(step.subj, step.grp))
     else
       
       %-------%
-      qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [cfg.cond '_' cfg.step{r}]);
+      qsubcellfun(cfg.step{r}, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [cfg.nick '_' cfg.step{r}]);
       %-------%
       
     end
@@ -138,7 +138,7 @@ end
 %-clear preprocessing
 if ~isempty(cfg.clear) && numel(cfg.clear) == numel(step.prep)
   for subj = cfg.subjall
-    ddir = sprintf('%s%04.f/%s/%s/', cfg.data, subj, cfg.mod, cfg.cond); % data
+    ddir = sprintf('%s%04.f/%s/%s/', cfg.data, subj, cfg.mod, cfg.nick); % data
     rmdir(ddir, 's');
   end
 end

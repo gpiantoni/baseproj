@@ -5,18 +5,24 @@ function projname(cfgin)
 %-------------------------------------%
 %-----------------%
 %-project folder
+% You can have multiple cfg.nick within a cfg.proj
+% A cfg.nick can make use of different cfg.rec
 cfg = [];
-% name of the project according to /data1/projects/PROJNAME/
-cfg.proj = 'PROJNAME'; % <- FIXTHIS
-% name to be used in PROJNAME/subjects/0001/MOD/CONDNAME/
-% ideally identical to cfg.proj
-cfg.cond = 'CONDNAME'; % <- FIXTHIS
+
+%-project name
+% /data1/projects/PROJNAME/
+cfg.proj = 'PROJNAME'; % <- TO SPECIFY
+
+%-nick name of the project
+% /data1/projects/PROJNAME/subjects/0001/MOD/NICKNAME/
+cfg.nick = 'CONDNAME'; % <- TO SPECIFY
 %-----------------%
 
 %-----------------%
 %-recording folder
-% name of the recordings according to /data1/recordings/RECNAME/
-cfg.rec  = 'RECNAME'; % <- FIXTHIS
+%-recording name
+% /data1/projects/PROJNAME/recordings/RECNAME/
+cfg.rec  = 'RECNAME'; % <- TO SPECIFY
 % name of the modality used in recordings ('eeg' or 'meg')
 cfg.mod  = 'eeg';
 %-----------------%
@@ -25,17 +31,30 @@ cfg.mod  = 'eeg';
 %-------------------------------------%
 %-DIRECTORIES-------------------------%
 %-------------------------------------%
+%-----------------%
+%-expected structure
+% /data1/projects/PROJNAME/
+%                     recordings/RECNAME/ -> ln -s /data1/recordings/RECNAME /data1/projects/PROJNAME/recordings
+%                     subjects/ -> subfolders will be created automatically
+%                     scripts/NICKNAME/ -> folder containing this script
+%                     analysis/ -> subfolders will be created automatically 
+%                         log/ -> containing log info and folders
+%                         erp/ -> for ERP analysis
+%                         pow/ -> for POW and POWCORR analysis
+%                         conn/ -> for connectivity analysis
+%                     results/NICKNAME/ -> if exists, png will be saved here
+%-----------------%
+
 cfg.base = ['/data1/projects/' cfg.proj filesep];
 cfg.recd = [cfg.base 'recordings/' cfg.rec filesep];
 cfg.recs = [cfg.recd 'subjects/'];
 
-cfg.scrp = [cfg.base 'scripts/' cfg.cond filesep]; % working directory which contains the current file % <- FIXTHIS
+cfg.scrp = [cfg.base 'scripts/' cfg.nick filesep]; % working directory which contains the current file
 cfg.qlog = [cfg.scrp 'qsublog/']; % use to keep log files from SGE
 cfg.data = [cfg.base 'subjects/']; 
 cfg.anly = [cfg.base 'analysis/'];
-cfg.rslt = [cfg.base 'results/' cfg.cond filesep]; % folder to save images
+cfg.rslt = [cfg.base 'results/' cfg.nick filesep]; % folder to save images
 
-%-TODO: how to treat these 3 folders nicely?
 cfg.derp = [cfg.anly 'erp/'];
 cfg.dpow = [cfg.anly 'pow/'];
 cfg.dcon = [cfg.anly 'conn/'];
@@ -67,13 +86,13 @@ step.nooge = [];
 % b) subject analysis (SGE, any order)
 % c) group analysis (no SGE, any order)
 st = 0;
-step.prep = [1  2  3  4];
+step.prep = [1  2  3];
 step.subj = [5  7  9 11];
 step.grp  = [6  8 10 12 13 14];
 %  5  6 -> erp  7  8 -> erpgrand
 %  9 10 -> pow 11  12 -> powgrand
 % 13 -> custom function 14 -> write to csv
-cfg.clear = [1  2  3]; % TODO: improve handling of clear, only meaningful for preprocessing
+cfg.clear = {'seldata' 'gclean'}; % clear the output of ...
 %-----------------%
 
 %-----------------%
@@ -127,31 +146,29 @@ cfg.gtool.emg.correction = 30;
 %-----------------%
 
 %-----------------%
-%-03: preprocessing on full trials
-st = st + 1;
-cfg.step{st} = 'preproc';
-cfg.preproc.reref = 'yes';
-cfg.preproc.refchannel = 'all';
-cfg.preproc.implicit = 'E257';
-
-cfg.preproc.hpfilter = 'yes';
-cfg.preproc.hpfreq = 0.5;
-cfg.preproc.hpfiltord = 4;
-
-cfg.csd.do = 'no';
-cfg.csd.method = 'finite'; % finite or spline or hjorth
-%-----------------%
-
-%-----------------%
-%-04: redefine trials
+%-03: redefine trials
 st = st + 1;
 cfg.step{st} = 'redef';
 cfg.redef.event2trl = 'event2trl_XXX';
 
 %-------%
+%-preproc before
+cfg.preproc1.hpfilter = 'yes';
+cfg.preproc1.hpfreq = 0.5;
+cfg.preproc1.hpfiltord = 4;
+%-------%
+
+%-------%
+%-preproc after
+cfg.preproc2.reref = 'yes';
+cfg.preproc2.refchannel = {'E94' 'E190'}; 
+cfg.preproc2.implicit = 'E257';
+%-------%
+
+%-------%
 %-these parameters depend on event2trl_XXX
 % they should be removed if not used
-cfg.redef.trigger = 'switch';
+cfg.redef.trigger = 'event_of_interest';
 cfg.redef.prestim = 2;
 cfg.redef.poststim = 2;
 %-------%
@@ -159,18 +176,14 @@ cfg.redef.poststim = 2;
 %---------------------------%
 
 %---------------------------%
-%-info for analysis
-% how you want to group your data. It specifies the 4th field (condition).
-% Use * carefully (don't add it if not necessary)
-cfg.test = {'*cond1' '*cond2'};
-%---------------------------%
-
-%---------------------------%
 %-ERP
 %-----------------%
-%-05: timelock analysis
+%-04: timelock analysis
 st = st + 1;
 cfg.step{st} = 'erp_subj';
+
+cfg.erp.cond = {'cond1*' 'cond2*'};
+
 cfg.erp.preproc.demean = 'yes';
 cfg.erp.preproc.baselinewindow = [-.2 0];
 cfg.erp.preproc.lpfilter = 'yes';
@@ -182,7 +195,8 @@ cfg.erp.preproc.lpfreq = 30;
 st = st + 1;
 cfg.step{st} = 'erp_grand';
 
-cfg.erpeffect = 1;
+cfg.gerp.cond = {{'*cond1'} {'*cond1' '*cond2'}};
+
 cfg.gerp.chan(1).name = 'occipital1';
 cfg.gerp.chan(1).chan =  {'E122','E123','E124','E133','E134','E135','E136','E137','E145','E146','E147','E148','E149','E156','E157','E158','E165','E166','E167','E174'};
 cfg.gerp.bline = cfg.erp.preproc.baselinewindow;
@@ -192,6 +206,8 @@ cfg.gerp.bline = cfg.erp.preproc.baselinewindow;
 %-07: lcmv on erp
 st = st + 1;
 cfg.step{st} = 'erpsource_subj';
+
+cfg.erpsource.cond = {'*cond1' '*cond2'};
 
 cfg.erpsource.erp   = cfg.erp;
 cfg.erpsource.bline = -.2; % use for covariance (this is the center, the length depends on erppeak)
@@ -205,6 +221,7 @@ switch cfg.erpsource.areas
     cfg.erpsource.erppeak(1).wndw = 0.05; % length of the time window
        
   case 'erppeak'
+    cfg.erp.refcond = '*cond1';
     
 end
 
@@ -230,14 +247,14 @@ cfg.erpsource.maxvox = 50; % max number of voxels anyway
 st = st + 1;
 cfg.step{st} = 'pow_subj';
 
+cfg.pow.cond = {'*cond1' '*cond2'};
+
 cfg.pow.method = 'mtmconvol';
 cfg.pow.output = 'pow';
 cfg.pow.taper = 'hanning';
 cfg.pow.foi = [2:.5:50];
 cfg.pow.t_ftimwin = 5  ./ cfg.pow.foi;
 cfg.pow.toi = [-1.5:.1:1.5];
-
-cfg.pow.bl.baseline = []; % [] (no baseline)
 %-----------------%
 
 %-----------------%
@@ -245,17 +262,29 @@ cfg.pow.bl.baseline = []; % [] (no baseline)
 st = st + 1;
 cfg.step{st} = 'pow_grand';
 
-cfg.poweffect = 1;
+cfg.pow.bl.baseline = [-.2 -.1];
+cfg.pow.bl.baselinetype = 'relchange';
+
+% for statistics
+cfg.gpow.cond = {{'*cond1'} {'*cond1' '*cond2'}};
+cfg.gpow.time = [0 1];
 
 cfg.gpow.chan(1).name = 'occ';
-cfg.gpow.chan(1).chan = {'E26' 'E27' 'E41' 'E42' 'E43' 'E55'};
-cfg.gpow.freq{1} = [8 12];
+cfg.gpow.chan(1).chan = {'E87' 'E98' 'E99' 'E100' 'E101' 'E107' 'E108' 'E109' 'E110' 'E117' 'E118' 'E119' 'E126' 'E127' 'E128' 'E129' 'E139' 'E140' 'E141' 'E151' 'E152' 'E153' 'E160' 'E161' 'E162'};
+cfg.gpow.chan(2).name = 'frontal';
+cfg.gpow.chan(2).chan = {'E5' 'E6' 'E7' 'E8' 'E15' 'E16' 'E23' 'E24' 'E29' 'E30' 'E36' 'E41' 'E42' 'E50' 'E204' 'E205' 'E206' 'E207' 'E213' 'E214' 'E215' 'E224'};
+cfg.gpow.freq(1).name = 'alpha';
+cfg.gpow.freq(1).freq = [8 12];
+cfg.gpow.freq(2).name = 'beta';
+cfg.gpow.freq(2).freq = [13 20];
 %-----------------%
 
 %-----------------%
 %-11: power analysis at source level
 st = st + 1;
 cfg.step{st} = 'powsource_subj';
+
+cfg.powsource.cond = {'*cond1' '*cond2'};
 
 cfg.powsource.bline = 0;
 
@@ -270,6 +299,7 @@ switch cfg.powsource.areas
     cfg.powsource.powpeak(1).name = 'alpha';
     
   case 'powpeak'
+    cfg.pow.refcond = '*cond1';
     
 end
 
@@ -302,7 +332,7 @@ cfg.yourfunction.parameter = 'test';
 %-14: write to csv
 st = st + 1;
 cfg.step{st} = 'export2csv';
-cfg.csvf = [cfg.anly cfg.cond '_complete.csv']; % file to write results to
+cfg.csvf = [cfg.anly cfg.nick '_complete.csv']; % file to write results to
 cfg.export2csv.extrainfo = [];
 %---------------------------%
 %-------------------------------------%

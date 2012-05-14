@@ -10,7 +10,7 @@ function output = addtoolbox(cfg)
 %   - dti
 %
 %   - project specific (with subdirectories)
-% The project-specific folder should be called [cfg.cond '_private']
+% The project-specific folder should be called [cfg.nick '_private']
 
 ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
 spmpath = '/data1/toolbox/spm8/'; % fieldtrip (svn)
@@ -70,7 +70,7 @@ end
 %-POTENTIAL TOOLBOXES
 %---------------------------%
 %-check which toolboxes are present (git)
-toolbox = {'eventbased' 'detectsleep' 'mri2lead' 'dti' [cfg.cond '_private']};
+toolbox = {'eventbased' 'detectsleep' 'mri2lead' 'dti' [cfg.nick '_private']};
 dirtools = dir(cfg.scrp);
 toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
 %---------------------------%
