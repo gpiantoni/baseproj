@@ -196,7 +196,7 @@ cfg.erp.preproc.lpfreq = 30;
 st = st + 1;
 cfg.step{st} = 'erp_grand';
 
-cfg.gerp.cond = {{'*cond1'} {'*cond1' '*cond2'}};
+cfg.gerp.comp = {{'*cond1'} {'*cond1' '*cond2'}};
 
 cfg.gerp.chan(1).name = 'occipital';
 cfg.gerp.chan(1).chan =  {'E122','E123','E124','E133','E134','E135','E136','E137','E145','E146','E147','E148','E149','E156','E157','E158','E165','E166','E167','E174'};
@@ -269,8 +269,7 @@ cfg.pow.bl.baseline = [-.2 -.1];
 cfg.pow.bl.baselinetype = 'relchange';
 
 % for statistics
-cfg.gpow.cond = {{'*cond1'} {'*cond1' '*cond2'}};
-cfg.gpow.time = [0 1];
+cfg.gpow.comp = {{'*cond1'} {'*cond1' '*cond2'}};
 
 cfg.gpow.chan(1).name = 'occ';
 cfg.gpow.chan(1).chan = {'E87' 'E98' 'E99' 'E100' 'E101' 'E107' 'E108' 'E109' 'E110' 'E117' 'E118' 'E119' 'E126' 'E127' 'E128' 'E129' 'E139' 'E140' 'E141' 'E151' 'E152' 'E153' 'E160' 'E161' 'E162'};
@@ -280,6 +279,8 @@ cfg.gpow.freq(1).name = 'alpha';
 cfg.gpow.freq(1).freq = [8 12];
 cfg.gpow.freq(2).name = 'beta';
 cfg.gpow.freq(2).freq = [13 20];
+
+cfg.gpow.stat.time = [0 1];
 %-----------------%
 
 %-----------------%
