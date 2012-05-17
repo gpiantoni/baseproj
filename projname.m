@@ -197,6 +197,7 @@ st = st + 1;
 cfg.step{st} = 'erp_grand';
 
 cfg.gerp.comp = {{'*cond1'} {'*cond1' '*cond2'}};
+cfg.cluster.thr = 0.05;
 
 cfg.gerp.chan(1).name = 'occipital';
 cfg.gerp.chan(1).chan =  {'E122','E123','E124','E133','E134','E135','E136','E137','E145','E146','E147','E148','E149','E156','E157','E158','E165','E166','E167','E174'};
