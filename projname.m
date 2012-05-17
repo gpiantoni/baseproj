@@ -88,11 +88,11 @@ step.sendemail = true;
 % c) group analysis (no SGE, any order)
 st = 0;
 step.prep = [1  2  3];
-step.subj = [5  7  9 11];
-step.grp  = [6  8 10 12 13 14];
-%  5  6 -> erp  7  8 -> erpgrand
-%  9 10 -> pow 11  12 -> powgrand
-% 13 -> custom function 14 -> write to csv
+step.subj = [4  6  8 10];
+step.grp  = [5  7  9 11 12 13];
+%  4  5 -> erp  6  7 -> erpgrand
+%  8  9 -> pow 10 11 -> powgrand
+% 12 -> custom function 13 -> write to csv
 cfg.clear = {'seldata' 'gclean'}; % clear the output of ...
 %-----------------%
 
