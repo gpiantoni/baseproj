@@ -10,19 +10,19 @@ function projname(cfgin)
 cfg = [];
 
 %-project name
-% /data1/projects/PROJNAME/
-cfg.proj = 'PROJNAME'; % <- TO SPECIFY
+% /data1/projects/PROJ/
+cfg.proj = 'PROJ'; % <- TO SPECIFY
 
 %-nick name of the project
-% /data1/projects/PROJNAME/subjects/0001/MOD/NICKNAME/
-cfg.nick = 'CONDNAME'; % <- TO SPECIFY
+% /data1/projects/PROJ/subjects/0001/MOD/NICK/
+cfg.nick = 'NICK'; % <- TO SPECIFY
 %-----------------%
 
 %-----------------%
 %-recording folder
 %-recording name
-% /data1/projects/PROJNAME/recordings/RECNAME/
-cfg.rec  = 'RECNAME'; % <- TO SPECIFY
+% /data1/projects/PROJ/recordings/REC/
+cfg.rec  = 'REC'; % <- TO SPECIFY
 % name of the modality used in recordings ('eeg' or 'meg')
 cfg.mod  = 'eeg';
 %-----------------%
@@ -33,16 +33,16 @@ cfg.mod  = 'eeg';
 %-------------------------------------%
 %-----------------%
 %-expected structure
-% /data1/projects/PROJNAME/
-%                     recordings/RECNAME/ -> ln -s /data1/recordings/RECNAME /data1/projects/PROJNAME/recordings
+% /data1/projects/PROJ/
+%                     recordings/REC/ -> ln -s /data1/recordings/REC /data1/projects/PROJ/recordings
 %                     subjects/ -> subfolders will be created automatically
-%                     scripts/NICKNAME/ -> folder containing this script
+%                     scripts/NICK/ -> folder containing this script
 %                     analysis/ -> subfolders will be created automatically 
 %                         log/ -> containing log info and folders
 %                         erp/ -> for ERP analysis
 %                         pow/ -> for POW and POWCORR analysis
 %                         conn/ -> for connectivity analysis
-%                     results/NICKNAME/ -> if exists, png will be saved here
+%                     results/NICK/ -> if exists, png will be saved here
 %-----------------%
 
 cfg.base = ['/data1/projects/' cfg.proj filesep];
@@ -78,6 +78,7 @@ cfg.subjall = 1:8;
 cfg.run = [1:14];
 
 step.nooge = [];
+step.sendemail = true;
 %-----------------%
 
 %-----------------%
@@ -132,14 +133,14 @@ cfg.seldata.label = cellfun(@(x) ['E' num2str(x)], num2cell(cfg.seldata.selchan)
 st = st + 1;
 cfg.step{st} = 'gclean';
 
-cfg.gtool.fsample = 1024; % <- manually specify the frequency (very easily bug-prone, but it does not read "data" all the time)
+cfg.gtool.fsample = 500; % <- manually specify the frequency (very easily bug-prone, but it does not read "data" all the time)
 cfg.gtool.saveall = false;
 cfg.gtool.verbose = true;
 
 cfg.gtool.lpfreqn = [.5 / (cfg.gtool.fsample/2)]; % normalized by half of the sampling frequency!
 
 cfg.gtool.bad_samples.MADs = 5;
-cfg.gtool.bad_channels.MADs = 8;
+cfg.gtool.bad_channels.MADs = 7;
 
 cfg.gtool.eog.correction = 50;
 cfg.gtool.emg.correction = 30;
@@ -161,7 +162,7 @@ cfg.preproc1.hpfiltord = 4;
 %-------%
 %-preproc after
 cfg.preproc2.reref = 'yes';
-cfg.preproc2.refchannel = {'E94' 'E190'}; 
+cfg.preproc2.refchannel = 'all'; 
 cfg.preproc2.implicit = 'E257';
 %-------%
 
@@ -197,8 +198,10 @@ cfg.step{st} = 'erp_grand';
 
 cfg.gerp.cond = {{'*cond1'} {'*cond1' '*cond2'}};
 
-cfg.gerp.chan(1).name = 'occipital1';
+cfg.gerp.chan(1).name = 'occipital';
 cfg.gerp.chan(1).chan =  {'E122','E123','E124','E133','E134','E135','E136','E137','E145','E146','E147','E148','E149','E156','E157','E158','E165','E166','E167','E174'};
+cfg.gerp.chan(2).name = 'frontal';
+cfg.gerp.chan(2).chan = {'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'E10', 'E11', 'E12', 'E13', 'E14', 'E15', 'E16', 'E17', 'E19', 'E20', 'E21', 'E22', 'E23', 'E24', 'E27', 'E28', 'E29', 'E30', 'E33', 'E34', 'E35', 'E36', 'E38', 'E39', 'E40', 'E41', 'E42', 'E43', 'E46', 'E47', 'E48', 'E49', 'E50', 'E51', 'E58', 'E186', 'E195', 'E196', 'E197', 'E198', 'E204', 'E205', 'E206', 'E207', 'E213', 'E214', 'E215', 'E222', 'E223', 'E224'};
 cfg.gerp.bline = cfg.erp.preproc.baselinewindow;
 %-----------------%
 
@@ -319,7 +322,7 @@ cfg.powsource.maxvox = 50; % max number of voxels anyway
 %---------------------------%
 
 %---------------------------%
-%-EXTRA FUNCTIONS (put these functions in PROJNAME_private)
+%-EXTRA FUNCTIONS (put these functions in PROJ_private)
 %-----------------%
 %-13: custom function
 st = st + 1;
