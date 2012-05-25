@@ -214,18 +214,18 @@ cfg.step{st} = 'erpsource_subj';
 cfg.erpsource.cond = {'*cond1' '*cond2'};
 
 cfg.erpsource.erp   = cfg.erp;
-cfg.erpsource.bline = -.2; % use for covariance (this is the center, the length depends on erppeak)
+cfg.erpsource.bline = -.2; % use for covariance (this is the center, the length depends on erp_peak)
 
-cfg.erpsource.areas = 'erppeak'; % 'manual' or 'erppeak' (peaks from granderp)
+cfg.erpsource.areas = 'erp_peak'; % 'manual' or 'erp_peak' (peaks from granderp)
 switch cfg.erpsource.areas
   
   case 'manual'
-    cfg.erpsource.erppeak(1).name = 'vis1';
-    cfg.erpsource.erppeak(1).time = 0.10; % center of the time window
-    cfg.erpsource.erppeak(1).wndw = 0.05; % length of the time window
+    cfg.erpsource.erp_peak(1).name = 'vis1';
+    cfg.erpsource.erp_peak(1).time = 0.10; % center of the time window
+    cfg.erpsource.erp_peak(1).wndw = 0.05; % length of the time window
        
-  case 'erppeak'
-    cfg.erp.refcond = '*cond1';
+  case 'erp_peak'
+    cfg.erpsource.refcomp = cfg.gerp.comp{1};
     
 end
 
@@ -293,18 +293,18 @@ cfg.powsource.cond = {'*cond1' '*cond2'};
 
 cfg.powsource.bline = 0;
 
-cfg.powsource.areas = 'manual'; % 'manual' or 'powpeak' (peaks from grandpow)
+cfg.powsource.areas = 'manual'; % 'manual' or 'pow_peak' (peaks from grandpow)
 switch cfg.powsource.areas
   
   case 'manual'
-    cfg.powsource.powpeak(1).time = 1;
-    cfg.powsource.powpeak(1).wndw = .6;
-    cfg.powsource.powpeak(1).freq = 10;
-    cfg.powsource.powpeak(1).band = 2;
-    cfg.powsource.powpeak(1).name = 'alpha';
+    cfg.powsource.pow_peak(1).time = 1;
+    cfg.powsource.pow_peak(1).wndw = .6;
+    cfg.powsource.pow_peak(1).freq = 10;
+    cfg.powsource.pow_peak(1).band = 2;
+    cfg.powsource.pow_peak(1).name = 'alpha';
     
-  case 'powpeak'
-    cfg.pow.refcond = '*cond1';
+  case 'pow_peak'
+    cfg.powsource.refcomp = cfg.gpow.comp{1};
     
 end
 
