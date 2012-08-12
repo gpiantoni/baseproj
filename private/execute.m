@@ -57,7 +57,11 @@ for r = intersect(cfg.run, step.prep) % only preproc steps
   %-------%
   %-ending of the name to be used for the processing step
   prevsteps = intersect(1:r-1, step.prep);
-  cfg.endname = sprintf('_%s', cfg.step{prevsteps});
+  if isempty(prevsteps)
+    cfg.endname = '';
+  else
+    cfg.endname = sprintf('_%s', cfg.step{prevsteps});
+  end
   %-------%
   
   %-----------------%
