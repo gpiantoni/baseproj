@@ -76,11 +76,7 @@ for i = 1:numel(fn)
     %-------%
     %-get val
     if iscell(cfg.(fn{i}))
-      val = [];
-      for k = 1:numel(cfg.(fn{i}))
-        val = [val tochar(cfg.(fn{i}){k})];
-      end
-      
+      val = cell2log(cfg.(fn{i}));
     else
       val = tochar(cfg.(fn{i}));
     end
@@ -104,6 +100,20 @@ for i = 1:numel(fn)
   
 end
 %-----------------%
+%-------------------------------------%
+
+%-------------------------------------%
+%-subfunction: deals with nested cells
+function [val] = cell2log(fld)
+val = [];
+for k = 1:numel(fld)
+  if iscell(fld{k})
+    val = [val ' {' cell2log(fld{k}) '} '];
+  else
+    val = [val tochar(fld{k})];
+  end
+  
+end
 %-------------------------------------%
 
 %-------------------------------------%
