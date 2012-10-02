@@ -40,7 +40,6 @@ info.rslt = [info.base 'results/' info.nick filesep]; % folder to save images
 
 info.derp = [info.anly 'erp/'];
 info.dpow = [info.anly 'pow/'];
-info.dcor = [info.anly 'corr/'];
 %-----------------%
 %-------------------------------------%
 

@@ -17,7 +17,6 @@ info = info_NICKNAME;
 if isdir(info.qlog); rmdir(info.qlog, 's'); end; mkdir(info.qlog);
 if isdir(info.derp); rmdir(info.derp, 's'); end; mkdir(info.derp);
 if isdir(info.dpow); rmdir(info.dpow, 's'); end; mkdir(info.dpow);
-if isdir(info.dcor); rmdir(info.dcor, 's'); end; mkdir(info.dcor);
 %-----------------%
 
 %-----------------%
