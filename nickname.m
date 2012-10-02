@@ -1,4 +1,11 @@
 function NICKNAME(cfgin)
+%MAIN FUNCTION
+% You should call this function and modify it with your parameters of interest
+% 
+% To use it in your project, you should change NICKNAME into the name of
+% your project/subjproject. In this toolbox, PROJNAME is the name of the
+% project (/data1/projects/PROJNAME/). One project can have multiple
+% subprojects, called NICKNAME.
 
 %-------------------------------------%
 %-INFO--------------------------------%
@@ -38,7 +45,7 @@ cfg(st).opt.rcnd = '_cond_to_read_';
 cfg(st).opt.trialfun = 'trialfun_NICKNAME';
 
 cfg(st).opt.selchan = 1:61;
-cfg(st).opt.label = cellfun(@(x) ['E' num2str(x)], num2cell(1:61), 'uni', 0);
+cfg(st).opt.label = cellfun(@(x) ['E' num2str(x)], num2cell(cfg(st).opt.selchan), 'uni', 0);
 %-----------------%
 
 %-----------------%
@@ -122,5 +129,5 @@ cfg(st).comp = {{'*cond1'} {'*cond1' '*cond2'}};
 %-------------------------------------%
 %-EXECUTE
 %TODO: add extra info to CFG
-execute(cfg, step)
+execute(info, cfg)
 %-------------------------------------%

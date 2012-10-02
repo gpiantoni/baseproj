@@ -60,13 +60,13 @@ cd(info.qlog)
 
 %-----------------%
 %-transform into cell
-infocell = repmat({info}, 1, numel(cfg.subjall));
+infocell = repmat({info}, 1, numel(info.subjall));
 subjcell = num2cell(info.subjall);
 %-----------------%
 
 for r = info.run
   disp(cfg(r).function)
-  cfgcell = repmat({cfg(r).opt}, 1, numel(cfg.subjall));
+  cfgcell = repmat({cfg(r).opt}, 1, numel(info.subjall));
   
   switch cfg(r).step
     
@@ -78,8 +78,8 @@ for r = info.run
       if intersect(r, info.nooge)
         
         %-------%
-        for s = cfg.subjall
-          feval(cfg(r).function, info, cfg, s);
+        for s = info.subjall
+          feval(cfg(r).function, info, cfg(r).opt, s);
         end
         %-------%
         
@@ -101,13 +101,13 @@ for r = info.run
       if intersect(r, info.nooge)
         
         %-------%
-        feval(cfg(r).function, info, cfg)
+        feval(cfg(r).function, info, cfg(r).opt)
         %-------%
         
       else
         
         %-------%
-        qsubcellfun(cfg(r).function, {info}, {cfg}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system')
+        qsubcellfun(cfg(r).function, {info}, {cfg(r).opt}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system')
         %-------%
         
       end
