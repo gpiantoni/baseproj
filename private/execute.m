@@ -86,7 +86,7 @@ for r = info.run
       else
         
         %-------%
-        qsubcellfun(cfg(r).function, infocell, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [cfg.nick '_' cfg(r).function]);
+        qsubcellfun(cfg(r).function, infocell, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [info.nick '_' cfg(r).function]);
         %-------%
         
       end
