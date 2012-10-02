@@ -9,10 +9,6 @@ function [log] = struct2log(cfg, outtype, lvl)
 % Other differences between the two is that csv does not include paths,
 % cuts values longer than 30 characters and fields are sorted alphabetically
 
-% 11/12/21 added csv option
-% 11/07/22 also for function_handle
-% 11/07/20 created
-
 %-----------------%
 %-input check
 if nargin < 2

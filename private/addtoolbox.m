@@ -1,4 +1,4 @@
-function output = addtoolbox(cfg)
+function output = addtoolbox(info)
 % add various toolbox:
 %   - fieldtrip
 %
@@ -10,7 +10,7 @@ function output = addtoolbox(cfg)
 %   - dti
 %
 %   - project specific (with subdirectories)
-% The project-specific folder should be called [cfg.nick '_private']
+% The project-specific folder should be called [info.nick '_private']
 
 ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
 spmpath = '/data1/toolbox/spm8/'; % fieldtrip (svn)
@@ -39,7 +39,7 @@ output = sprintf('fieldtrip:\t%s', ftver);
 
 %-------------------------------------%
 %-GERMAN'S TOOLBOX (called eegcore)
-gpath = [cfg.scrp 'eegcore/']; % eegcore (bitbucket, with subdirectories)
+gpath = [info.scrp 'eegcore/']; % eegcore (bitbucket, with subdirectories)
 
 if isdir(gpath)
   %-----------------%
@@ -70,8 +70,8 @@ end
 %-POTENTIAL TOOLBOXES
 %---------------------------%
 %-check which toolboxes are present (git)
-toolbox = {'eventbased' 'detectsleep' 'mri2lead' 'dti' [cfg.nick '_private']};
-dirtools = dir(cfg.scrp);
+toolbox = {'eventbased' 'detectsleep' 'mri2lead' 'dti' [info.nick '_private']};
+dirtools = dir(info.scrp);
 toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
 %---------------------------%
 
@@ -79,7 +79,7 @@ toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
 %-add present toolbox
 for i = 1:numel(toolbox)
   
-  tpath = [cfg.scrp toolbox{i} filesep];
+  tpath = [info.scrp toolbox{i} filesep];
   addpath(genpath(tpath)) % with subdirectories
   
   %-----------------%
