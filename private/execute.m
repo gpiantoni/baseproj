@@ -145,7 +145,7 @@ end
 %-------------------------------------%
 %-send email
 if info.sendemail
-  send_email(info, cfg)
+  send_email(info)
 end
 cd(info.scrp)
 %-------------------------------------%
