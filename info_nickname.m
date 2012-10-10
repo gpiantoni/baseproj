@@ -58,9 +58,6 @@ info.sens.layout = '/path/to/sensors/layout/in/2D.mat';
 info.vol.type = 'dipoli'; % 'template' or 'dipoli' ('dipoli' 'bemcp' 'openmeeg' and the rest use subject-specific MRI)
 if strcmp(info.vol.type, 'template')
   info.vol.template = '/path/to/template/file.mat'; % which contains "vol" "lead" "elec"
-else
-  info.vol.mod = 'smri';
-  info.vol.cond = 't1';
 end
 info.sourcespace = 'surface'; % 'surface' or 'volume' or 'volume_warp'
 %-----------------%
