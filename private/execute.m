@@ -13,7 +13,8 @@ function execute(info, cfg)
 % CFG should be a Nx1 struct with obligatory fields:
 %  .function: function to call
 %  .step: whether the function is subject-specific ('subj') or a
-%         grand-average ('grand')
+%         grand-average ('grand') or a summary ('summary')
+%         In summary, it passes the complete cfg
 %  .opt: optional configuration for that function
 %
 
@@ -113,8 +114,28 @@ for r = info.run
       end
       %---------------------------%
       
+    case 'summary'
+      %---------------------------%
+      %-SUMMARY
+      %-----------------%
+      %-run for all the subjects
+      if intersect(r, info.nooge)
+        
+        %-------%
+        feval(cfg(r).function, info, cfg)
+        %-------%
+        
+      else
+        
+        %-------%
+        qsubcellfun(cfg(r).function, {info}, {cfg}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system')
+        %-------%
+        
+      end
+      %---------------------------%
+      
     otherwise
-      warning([cfg(r).step ' is neither ''subj'' nor ''grand'''])
+      warning([cfg(r).step ' can only be ''subj'', ''grand'' or ''summary'''])
       
   end
   
@@ -124,7 +145,7 @@ end
 %-------------------------------------%
 %-send email
 if info.sendemail
-  send_email(info, cfg)
+  send_email(info)
 end
 cd(info.scrp)
 %-------------------------------------%

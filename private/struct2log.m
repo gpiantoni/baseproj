@@ -47,13 +47,6 @@ end
 %-----------------%
 %-define fieldnames
 fn = fieldnames(cfg);
-
-%-------%
-%-sort fields for csv (less meaningful, but more consistent)
-if strcmp(outtype, 'csv')
-  fn = sort(fn); 
-end
-%-------%
 %-----------------%
 
 for i = 1:numel(fn)
