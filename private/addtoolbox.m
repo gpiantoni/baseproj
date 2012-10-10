@@ -38,39 +38,10 @@ output = sprintf('fieldtrip:\t%s', ftver);
 %-------------------------------------%
 
 %-------------------------------------%
-%-GERMAN'S TOOLBOX (called eegcore)
-gpath = [info.scrp 'eegcore/']; % eegcore (bitbucket, with subdirectories)
-
-if isdir(gpath)
-  %-----------------%
-  %-add gtool toolbox (here, otherwise matlab does not recognize "import"
-  % statement in subfunctions) and remove matlab_bgl, because one function
-  % has the same name as a built-in functions, giving tons of warnings
-  oldpath = genpath(gpath);
-  dirs = regexp(oldpath, ':', 'split');
-  goodpath = dirs(cellfun(@isempty, regexp(dirs, 'matlab_bgl')));
-  addpath(sprintf('%s:', goodpath{:}))
-  %-----------------%
-  
-  %-----------------%
-  %-get gtoolbox version
-  try % so many thing can go wrong here
-    [~, gver] = system(['hg --debug tags --cwd ' gpath ' | awk ''{print $2}''']);
-  catch ME
-    gver = ME.message;
-  end
-  outtmp = sprintf('eegcore:\t%s', gver);
-  output = [output outtmp];
-  %-----------------%
-  
-end
-%-------------------------------------%
-
-%-------------------------------------%
 %-POTENTIAL TOOLBOXES
 %---------------------------%
 %-check which toolboxes are present (git)
-toolbox = {'eventbased' 'detectsleep' 'mri2lead' 'dti' [info.nick '_private']};
+toolbox = {'eegpipe' 'eventbased' 'detectsleep' 'mri2lead' 'dti' [info.nick '_private']};
 dirtools = dir(info.scrp);
 toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
 %---------------------------%
@@ -80,7 +51,23 @@ toolbox = intersect(toolbox, {dirtools.name}); % only those that are present
 for i = 1:numel(toolbox)
   
   tpath = [info.scrp toolbox{i} filesep];
-  addpath(genpath(tpath)) % with subdirectories
+  
+  if strcmp(toolbox{i}, 'eegpipe')
+    
+    %-----------------%
+    %-add gtool toolbox (here, otherwise matlab does not recognize "import"
+    % statement in subfunctions) and remove matlab_bgl, because one function
+    % has the same name as a built-in functions, giving tons of warnings
+    oldpath = genpath(tpath);
+    dirs = regexp(oldpath, ':', 'split');
+    goodpath = dirs(cellfun(@isempty, regexp(dirs, 'matlab_bgl')));
+    addpath(sprintf('%s:', goodpath{:}))
+    %-----------------%
+    
+  else
+    addpath(genpath(tpath)) % with subdirectories
+    
+  end
   
   %-----------------%
   %-get git version
