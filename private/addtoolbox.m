@@ -13,7 +13,8 @@ function output = addtoolbox(info)
 % The project-specific folder should be called [info.nick '_private']
 
 ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
-spmpath = '/data1/toolbox/spm8/'; % fieldtrip (svn)
+spmpath = '/data1/toolbox/spm8/'; % no svn
+eegpath = '/data1/toolbox/eeglab/'; % eeglab (svn, but only for plotting)
 
 %-------------------------------------%
 %-FIELDTRIP (always necessary)
@@ -24,6 +25,8 @@ global ft_default
 ft_default.checksize = Inf; % otherwise it deletes cfg field which are too big
 ft_defaults
 addpath([ftpath 'qsub/'])
+% addcleanpath([], 'compat') % ft_defaults keeps on readding compat, just
+% remove the folders "compat" and "utilities/compat" from the fieldtrip folder
 %-----------------%
 
 %-----------------%
@@ -53,16 +56,9 @@ for i = 1:numel(toolbox)
   tpath = [info.scrp toolbox{i} filesep];
   
   if strcmp(toolbox{i}, 'eegpipe')
-    
-    %-----------------%
-    %-add gtool toolbox (here, otherwise matlab does not recognize "import"
-    % statement in subfunctions) and remove matlab_bgl, because one function
-    % has the same name as a built-in functions, giving tons of warnings
-    oldpath = genpath(tpath);
-    dirs = regexp(oldpath, ':', 'split');
-    goodpath = dirs(cellfun(@isempty, regexp(dirs, 'matlab_bgl')));
-    addpath(sprintf('%s:', goodpath{:}))
-    %-----------------%
+
+    addcleanpath(eegpath, {'fieldtrip' 'octavefunc'}) % no fieldtrip or octave functions
+    addcleanpath(tpath, 'matlab_bgl')
     
   else
     addpath(genpath(tpath)) % with subdirectories
@@ -86,19 +82,37 @@ for i = 1:numel(toolbox)
     
     addpath(spmpath)
     spm defaults eeg
-    
-    %-------%
-    %-avoid conflict between spm8 and fieldtrip
-    % remove folders that have both spm8 and fieldtrip (external of spm)
-    oldpath = matlabpath;
-    dirs = regexp(oldpath, ':', 'split');
-    goodpath = dirs(cellfun(@isempty, regexp(dirs, 'fieldtrip')) | cellfun(@isempty, regexp(dirs, 'spm8')));
-    matlabpath(sprintf('%s:', goodpath{:}))
-    %-------%
+    addcleanpath([], 'spm8/external/fieldtrip')
     
   end
   %-----------------%
   
 end
 %---------------------------%
+%-------------------------------------%
+
+%-------------------------------------%
+%-Remove folders before adding to the path, to avoid naming conflicts
+function addcleanpath(tpath, nopath)
+
+if ~iscell(nopath)
+  nopath = {nopath};
+end
+
+if isempty(tpath)
+  oldpath = path;
+else
+  oldpath = genpath(tpath);
+end
+
+goodpath = regexp(oldpath, ':', 'split');
+for i = 1:numel(nopath)
+  goodpath = goodpath(cellfun(@isempty, regexp(goodpath, nopath{i})));
+end
+
+if isempty(tpath)
+  path(sprintf('%s:', goodpath{:}))
+else
+  addpath(sprintf('%s:', goodpath{:}))
+end
 %-------------------------------------%
