@@ -15,8 +15,8 @@ function execute(info, cfg)
 %  .step: whether the function is subject-specific ('subj') or a
 %         grand-average ('grand') or a summary ('summary')
 %         In summary, it passes the complete cfg
+%  .queue: the queue to send the jobs to (optional)
 %  .opt: optional configuration for that function
-%
 
 %-------------------------------------%
 %-LOG---------------------------------%
@@ -69,6 +69,15 @@ for r = info.run
   disp(cfg(r).function)
   cfgcell = repmat({cfg(r).opt}, 1, numel(info.subjall));
   
+  %-----------------%
+  %-specify queue
+  if isfield(cfg(r), 'queue') && ~isempty(cfg(r).queue)
+    queue = cfg(r).queue;
+  else
+    queue = [];
+  end
+  %-----------------%
+  
   switch cfg(r).step
     
     case 'subj'
@@ -87,7 +96,8 @@ for r = info.run
       else
         
         %-------%
-        qsubcellfun(cfg(r).function, infocell, cfgcell, subjcell, 'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [info.nick '_' cfg(r).function]);
+        qsubcellfun(cfg(r).function, infocell, cfgcell, subjcell, ...
+          'memreq', 8*1024^3, 'timreq', 48*60*60, 'batchid', [info.nick '_' cfg(r).function], 'queue', queue);
         %-------%
         
       end
@@ -108,7 +118,8 @@ for r = info.run
       else
         
         %-------%
-        qsubcellfun(cfg(r).function, {info}, {cfg(r).opt}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system')
+        qsubcellfun(cfg(r).function, {info}, {cfg(r).opt}, ...
+          'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system', 'queue', queue)
         %-------%
         
       end
@@ -128,7 +139,8 @@ for r = info.run
       else
         
         %-------%
-        qsubcellfun(cfg(r).function, {info}, {cfg}, 'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system')
+        qsubcellfun(cfg(r).function, {info}, {cfg}, ...
+          'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system', 'queue', queue)
         %-------%
         
       end
