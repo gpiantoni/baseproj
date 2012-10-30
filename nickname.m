@@ -54,11 +54,8 @@ cfg(st).function = 'gclean';
 cfg(st).step = 'subj';
 
 cfg(st).opt.fsample = 1000; % <- manually specify the frequency (very easily bug-prone, but it does not read "data" all the time)
-cfg(st).opt.saveall = false;
-cfg(st).opt.verbose = true;
 
 cfg(st).opt.hpfreq = [.5 / (cfg(st).opt.fsample/2)]; % normalized by half of the sampling frequency!
-
 cfg(st).opt.bad_samples.MADs = 5;
 cfg(st).opt.bad_samples.Percentile = [25 75];
 cfg(st).opt.bad_channels.MADs = 8;
