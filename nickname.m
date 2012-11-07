@@ -123,6 +123,5 @@ cfg(st).comp = {{'*cond1'} {'*cond1' '*cond2'}};
 
 %-------------------------------------%
 %-EXECUTE
-%TODO: add extra info to CFG
 execute(info, cfg)
 %-------------------------------------%
