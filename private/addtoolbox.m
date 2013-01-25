@@ -29,7 +29,7 @@ addpath([ftpath 'qsub/'])
 %-----------------%
 %-get fieldtrip version
 try % so many thing can go wrong here
-  [~, ftver] = system(['awk ''NR==4'' ' ftpath '.svn/entries']);
+  [~, ftver] = system(['git --git-dir=' ftpath '.git log |  awk ''NR==1'' | awk ''{print $2}''']);
 catch ME
   ftver = ME.message;
 end
