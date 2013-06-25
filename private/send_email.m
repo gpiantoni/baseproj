@@ -33,7 +33,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Send the email
 if isempty(attachment)
-  send_mail_message('gpiantoni.work', [info.proj '/' info.nick], mailtext)
+  send_mail_message('gpiantoni+overnightscript', [info.proj '/' info.nick], mailtext)
 else
-  send_mail_message('gpiantoni.work', [info.proj '/' info.nick], mailtext, attachment)
+  send_mail_message('gpiantoni+overnightscript', [info.proj '/' info.nick], mailtext, attachment)
 end
