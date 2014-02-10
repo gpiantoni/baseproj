@@ -22,7 +22,7 @@ fclose(fid);
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % % find attachments
-pngfind  = dir([info.log filesep '*.png']);
+pngfind  = dir([info.log filesep '*.p*']);
 attachment = [];
 cnt = 0;
 for k=1:numel(pngfind)
