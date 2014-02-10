@@ -12,8 +12,15 @@ function output = addtoolbox(info)
 %   - project specific (with subdirectories)
 % The project-specific folder should be called [info.nick '_private']
 
-ftpath = '/data1/toolbox/fieldtrip/'; % fieldtrip (svn)
-spmpath = '/data1/toolbox/spm8/'; % fieldtrip (svn)
+[~, host] = system('hostname');
+if strcmp(host(end-12:end-1), 'partners.org')
+  tbox_dir = '/PHShome/gp902/toolbox/';
+else
+  tbox_dir = '/data1/toolbox/';
+end
+
+ftpath = [tbox_dir 'fieldtrip/']; % fieldtrip (git)
+spmpath = [tbox_dir 'spm8/'];
 
 %-------------------------------------%
 %-FIELDTRIP (always necessary)
