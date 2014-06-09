@@ -26,7 +26,7 @@ end
 %-use local fieldtrip if present
 currentpath = mfilename('fullpath');
 
-ftpath = [fileparts(currentpath) filesep 'fieldtrip' filesep];
+ftpath = [fileparts(fileparts(currentpath)) filesep 'fieldtrip' filesep];
 if ~exist(ftpath)
   ftpath = [tbox_dir 'fieldtrip/']; % fieldtrip (git)
 end
