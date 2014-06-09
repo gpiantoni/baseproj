@@ -12,15 +12,26 @@ function output = addtoolbox(info)
 %   - project specific (with subdirectories)
 % The project-specific folder should be called [info.nick '_private']
 
+%-----------------%
+%-check location of the toolbox dir
 [~, host] = system('hostname');
 if strcmp(host(end-12:end-1), 'partners.org')
   tbox_dir = '/PHShome/gp902/toolbox/';
 else
   tbox_dir = '/data1/toolbox/';
 end
+%-----------------%
 
-ftpath = [tbox_dir 'fieldtrip/']; % fieldtrip (git)
+%-----------------%
+%-use local fieldtrip if present
+currentpath = mfilename('fullpath');
+
+ftpath = [fileparts(currentpath) filesep 'fieldtrip' filesep];
+if ~exist(ftpath)
+  ftpath = [tbox_dir 'fieldtrip/']; % fieldtrip (git)
+end
 spmpath = [tbox_dir 'spm8/'];
+%-----------------%
 
 %-------------------------------------%
 %-FIELDTRIP (always necessary)

@@ -119,7 +119,8 @@ for r = info.run
         
         %-------%
         qsubcellfun(cfg(r).function, {info}, {cfg(r).opt}, ...
-          'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system', 'queue', queue)
+          'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system', ...
+          'queue', queue, 'jvm', 'no')
         %-------%
         
       end
@@ -140,7 +141,8 @@ for r = info.run
         
         %-------%
         qsubcellfun(cfg(r).function, {info}, {cfg}, ...
-          'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system', 'queue', queue)
+          'memreq', 20*1024^3, 'timreq', 48*60*60, 'backend', 'system', ...
+          'queue', queue, 'jvm', 'no')
         %-------%
         
       end
